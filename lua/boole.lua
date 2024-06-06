@@ -5,6 +5,23 @@ local replace_map = {
   decrement = {},
 }
 
+local default_opts = {
+    mappings = {
+        increment = nil,
+        decrement = nil,
+    },
+    additions = nil,
+    allow_caps_additions = nil,
+    defaults = {
+        letters = true,
+        booleans = true,
+        canonical_hours = true,
+        days_of_week = true,
+        months_of_year = true,
+        colors = true,
+    }
+}
+
 M.generate = function(loop_list, allow_caps)
   for i = 1, #loop_list do
     local current = loop_list[i]
@@ -32,295 +49,308 @@ local letters = {
   'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 }
 
-for _, letter in ipairs(letters) do
-    M.generate(
-        {
-            letter .. 0,
-            letter .. 1,
-            letter .. 2,
-            letter .. 3,
-            letter .. 4,
-            letter .. 5,
-            letter .. 6,
-            letter .. 7,
-            letter .. 8,
-            letter .. 9
-        },
-        true
-    )
+local generate_defaults = function(defaults)
+    if defaults == nil or defaults == false then return end
+
+    if defaults.letters then
+        for _, letter in ipairs(letters) do
+            M.generate(
+                {
+                    letter .. 0,
+                    letter .. 1,
+                    letter .. 2,
+                    letter .. 3,
+                    letter .. 4,
+                    letter .. 5,
+                    letter .. 6,
+                    letter .. 7,
+                    letter .. 8,
+                    letter .. 9
+                },
+                true
+            )
+        end
+    end
+
+    if defaults.booleans then
+        M.generate({'true', 'false'}, true)
+        M.generate({'yes', 'no'}, true)
+        M.generate({'on', 'off'}, true)
+        M.generate({'enable', 'disable'}, true)
+        M.generate({'enabled', 'disabled'}, true)
+    end
+
+    if defaults.canonical_hours then
+        M.generate(
+            {
+                'Matins',
+                'Lauds',
+                'Prime',
+                'Terce',
+                'Sext',
+                'Nones',
+                'Vespers',
+                'Compline',
+                'Vigil'
+            }
+        )
+    end
+
+    if defaults.days_of_week then
+        M.generate(
+            {
+                'monday',
+                'tuesday',
+                'wednesday',
+                'thursday',
+                'friday',
+                'saturday',
+                'sunday'
+            },
+            true
+        )
+        M.generate(
+            {
+                'mon',
+                'tue',
+                'wed',
+                'thu',
+                'fri',
+                'sat',
+                'sun'
+            },
+            true
+        )
+    end
+
+    if defaults.months_of_year then
+        M.generate(
+            {
+                'january',
+                'february',
+                'march',
+                'april',
+                'may',
+                'june',
+                'july',
+                'august',
+                'september',
+                'october',
+                'november',
+                'december'
+            },
+            true
+        )
+    end
+
+    if defaults.colors then
+        -- Colors
+        M.generate(
+            {
+                'red',
+                'orange',
+                'yellow',
+                'green',
+                'blue',
+                'indigo',
+                'violet'
+            })
+
+        M.generate(
+            {
+                'White',
+                'Snow',
+                'Ivory',
+                'Linen',
+                'AntiqueWhite',
+                'Beige',
+                'WhiteSmoke',
+                'LavenderBlush',
+                'OldLace',
+                'AliceBlue',
+                'SeaShell',
+                'GhostWhite',
+                'Honeydew',
+                'FloralWhite',
+                'Azure',
+                'MintCream'
+            }
+        )
+
+        M.generate(
+            {
+                'Black',
+                'DarkSlateGray',
+                'DimGray',
+                'SlateGray',
+                'Gray',
+                'LightSlateGray',
+                'Silver',
+                'LightGray',
+                'Gainsboro'
+            }
+        )
+
+        M.generate(
+            {
+                'Pink',
+                'LightPink',
+                'HotPink',
+                'PaleVioletRed',
+                'DeepPink',
+                'MediumVioletRed',
+            }
+        )
+
+        M.generate(
+            {
+                'Indigo',
+                'Purple',
+                'DarkMagenta',
+                'DarkViolet',
+                'DarkSlateBlue',
+                'BlueViolet',
+                'DarkOrchid',
+                'Fuchsia',
+                'Magenta',
+                'SlateBlue',
+                'MediumSlateBlue',
+                'MediumOrchid',
+                'MediumPurple',
+                'Orchid',
+                'Violet',
+                'Plum',
+                'Thistle',
+                'Lavender'
+            }
+        )
+
+        M.generate(
+            {
+                'DarkRed',
+                'Red',
+                'Firebrick',
+                'Crimson',
+                'IndianRed',
+                'LightCoral',
+                'Salmon',
+                'DarkSalmon',
+                'LightSalmon'
+            }
+        )
+
+        M.generate(
+            {
+                'OrangeRed',
+                'Tomato',
+                'DarkOrange',
+                'Coral',
+                'Orange'
+            }
+        )
+
+        M.generate(
+            {
+                'DarkKhaki',
+                'Gold',
+                'Khaki',
+                'PeachPuff',
+                'Yellow',
+                'PaleGoldenRod',
+                'Moccasin',
+                'PapayaWhip',
+                'LightGoldenRodYellow',
+                'LemonChiffon',
+                'LightYellow'
+            }
+        )
+
+        M.generate(
+            {
+                'MidnightBlue',
+                'Navy',
+                'DarkBlue',
+                'MediumBlue',
+                'Blue',
+                'RoyalBlue',
+                'SteelBlue',
+                'DodgerBlue',
+                'DeepSkyBlue',
+                'CornflowerBlue',
+                'SkyBlue',
+                'LightSkyBlue',
+                'LightSteelBlue',
+                'LightBlue',
+                'PowderBlue',
+            }
+        )
+
+        M.generate(
+            {
+                'Maroon',
+                'Brown',
+                'SaddleBrown',
+                'Sienna',
+                'Chocolate',
+                'DarkGoldenRod',
+                'Peru',
+                'RosyBrown',
+                'GoldenRod',
+                'SandyBrown',
+                'Tan',
+                'BurlyWood',
+                'Wheat',
+                'NavajoWhite',
+                'Bisque',
+                'BlanchedAlmond',
+                'Cornsilk',
+            }
+        )
+
+        M.generate(
+            {
+                'Teal',
+                'DarkCyan',
+                'LightSeaGreen',
+                'CadetBlue',
+                'DarkTurquoise',
+                'MediumTurquoise',
+                'Turquoise',
+                'Aqua',
+                'Cyan',
+                'Aquamarine',
+                'PaleTurquoise',
+                'LightCyan',
+            }
+        )
+
+        M.generate(
+            {
+                'DarkGreen',
+                'Green',
+                'DarkOliveGreen',
+                'ForestGreen',
+                'SeaGreen',
+                'Olive',
+                'OliveDrab',
+                'MediumSeaGreen',
+                'LimeGreen',
+                'Lime',
+                'SpringGreen',
+                'MediumSpringGreen',
+                'DarkSeaGreen',
+                'MediumAquamarine',
+                'YellowGreen',
+                'LawnGreen',
+                'Chartreuse',
+                'LightGreen',
+                'GreenYellow',
+                'PaleGreen',
+            }
+        )
+    end
 end
 
--- Booleans
-M.generate({'true',    'false'},    true)
-M.generate({'yes',     'no'},       true)
-M.generate({'on',      'off'},      true)
-M.generate({'enable',  'disable'},  true)
-M.generate({'enabled', 'disabled'}, true)
-
--- Canonical hours
-M.generate(
-    {
-        'Matins',
-        'Lauds',
-        'Prime',
-        'Terce',
-        'Sext',
-        'Nones',
-        'Vespers',
-        'Compline',
-        'Vigil'
-    }
-)
-
--- Days of the week
-M.generate(
-    {
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday'
-    },
-    true
-)
-M.generate(
-    {
-        'mon',
-        'tue',
-        'wed',
-        'thu',
-        'fri',
-        'sat',
-        'sun'
-    },
-    true
-)
-
--- Months of the year
-M.generate(
-    {
-        'january',
-        'february',
-        'march',
-        'april',
-        'may',
-        'june',
-        'july',
-        'august',
-        'september',
-        'october',
-        'november',
-        'december'
-    },
-    true
-)
-
--- Colors
-M.generate(
-    {
-        'red',
-        'orange',
-        'yellow',
-        'green',
-        'blue',
-        'indigo',
-        'violet'
-    })
-
-M.generate(
-    {
-        'White',
-        'Snow',
-        'Ivory',
-        'Linen',
-        'AntiqueWhite',
-        'Beige',
-        'WhiteSmoke',
-        'LavenderBlush',
-        'OldLace',
-        'AliceBlue',
-        'SeaShell',
-        'GhostWhite',
-        'Honeydew',
-        'FloralWhite',
-        'Azure',
-        'MintCream'
-    }
-)
-
-M.generate(
-    {
-        'Black',
-        'DarkSlateGray',
-        'DimGray',
-        'SlateGray',
-        'Gray',
-        'LightSlateGray',
-        'Silver',
-        'LightGray',
-        'Gainsboro'
-    }
-)
-
-M.generate(
-    {
-        'Pink',
-        'LightPink',
-        'HotPink',
-        'PaleVioletRed',
-        'DeepPink',
-        'MediumVioletRed',
-    }
-)
-
-M.generate(
-    {
-        'Indigo',
-        'Purple',
-        'DarkMagenta',
-        'DarkViolet',
-        'DarkSlateBlue',
-        'BlueViolet',
-        'DarkOrchid',
-        'Fuchsia',
-        'Magenta',
-        'SlateBlue',
-        'MediumSlateBlue',
-        'MediumOrchid',
-        'MediumPurple',
-        'Orchid',
-        'Violet',
-        'Plum',
-        'Thistle',
-        'Lavender'
-    }
-)
-
-M.generate(
-    {
-        'DarkRed',
-        'Red',
-        'Firebrick',
-        'Crimson',
-        'IndianRed',
-        'LightCoral',
-        'Salmon',
-        'DarkSalmon',
-        'LightSalmon'
-    }
-)
-
-M.generate(
-    {
-        'OrangeRed',
-        'Tomato',
-        'DarkOrange',
-        'Coral',
-        'Orange'
-    }
-)
-
-M.generate(
-    {
-        'DarkKhaki',
-        'Gold',
-        'Khaki',
-        'PeachPuff',
-        'Yellow',
-        'PaleGoldenRod',
-        'Moccasin',
-        'PapayaWhip',
-        'LightGoldenRodYellow',
-        'LemonChiffon',
-        'LightYellow'
-    }
-)
-
-M.generate(
-    {
-        'MidnightBlue',
-        'Navy',
-        'DarkBlue',
-        'MediumBlue',
-        'Blue',
-        'RoyalBlue',
-        'SteelBlue',
-        'DodgerBlue',
-        'DeepSkyBlue',
-        'CornflowerBlue',
-        'SkyBlue',
-        'LightSkyBlue',
-        'LightSteelBlue',
-        'LightBlue',
-        'PowderBlue',
-    }
-)
-
-M.generate(
-    {
-        'Maroon',
-        'Brown',
-        'SaddleBrown',
-        'Sienna',
-        'Chocolate',
-        'DarkGoldenRod',
-        'Peru',
-        'RosyBrown',
-        'GoldenRod',
-        'SandyBrown',
-        'Tan',
-        'BurlyWood',
-        'Wheat',
-        'NavajoWhite',
-        'Bisque',
-        'BlanchedAlmond',
-        'Cornsilk',
-    }
-)
-
-M.generate(
-    {
-        'Teal',
-        'DarkCyan',
-        'LightSeaGreen',
-        'CadetBlue',
-        'DarkTurquoise',
-        'MediumTurquoise',
-        'Turquoise',
-        'Aqua',
-        'Cyan',
-        'Aquamarine',
-        'PaleTurquoise',
-        'LightCyan',
-    }
-)
-
-M.generate(
-    {
-        'DarkGreen',
-        'Green',
-        'DarkOliveGreen',
-        'ForestGreen',
-        'SeaGreen',
-        'Olive',
-        'OliveDrab',
-        'MediumSeaGreen',
-        'LimeGreen',
-        'Lime',
-        'SpringGreen',
-        'MediumSpringGreen',
-        'DarkSeaGreen',
-        'MediumAquamarine',
-        'YellowGreen',
-        'LawnGreen',
-        'Chartreuse',
-        'LightGreen',
-        'GreenYellow',
-        'PaleGreen',
-    }
-)
 --Check cursor word match the cword
 function check_postion_word(words,target_position,target_word)
     --In lua tab space is %s other is %S
@@ -328,7 +358,7 @@ function check_postion_word(words,target_position,target_word)
     --we have to know char in column[0] is word or %s
     i,j = string.find(words,"%S+");
     local position = 0;
-    if i==1 then 
+    if i==1 then
         position = j
         --Cursor in first word
         if position > target_position then
@@ -476,6 +506,8 @@ M.run = function(direction)
 end
 
 M.setup = function(options)
+    options = vim.tbl_deep_extend('force', default_opts, options)
+
     vim.api.nvim_create_user_command(
         'Boole',
         function(args) M.run(args.args) end,
@@ -514,6 +546,8 @@ M.setup = function(options)
             '<Cmd>Boole decrement<CR>'
         )
     end
+
+    generate_defaults(options.defaults)
 
     return true
 end
