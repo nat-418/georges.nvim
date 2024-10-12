@@ -56,6 +56,7 @@ M.generate({'yes',     'no'},       true)
 M.generate({'on',      'off'},      true)
 M.generate({'enable',  'disable'},  true)
 M.generate({'enabled', 'disabled'}, true)
+M.generate({'left', 'right'}, true)
 
 -- Canonical hours
 M.generate(
